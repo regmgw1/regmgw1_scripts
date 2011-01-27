@@ -22,3 +22,6 @@ gzip $PATH2OUTPUT/${NAME}_rpm.wig
 gzip $PATH2OUTPUT/${NAME}_for_rpm.wig
 gzip $PATH2OUTPUT/${NAME}_rev_rpm.wig
 #rm $PATH2OUTPUT/$NAME.medips
+
+# create sample.list file for use in pt5
+cat $NAME >>$PATH2OUTPUT/sample.list
