@@ -11,7 +11,7 @@ gareth.wilson@cancer.ucl.ac.uk
 Use bedTools 'intersectBed' to determine how many reads are found under peaks. Quicker than peak_explorer.pl.
 =head2 Usage
 
-Usage: ./peaks_explorer_bedtools.pl sample_list path2bedDir path2peakroot path2peaklist
+Usage: ./peaks_explorer_bedtools.pl sample_list path2bedDir path2peakroot path2peaklist path2output
 
 =cut
 
@@ -22,7 +22,7 @@ Usage: ./peaks_explorer_bedtools.pl sample_list path2bedDir path2peakroot path2p
 use strict;
 
 unless (@ARGV ==5) {
-        die "\n\nUsage:\n ./peaks_explorer_bedtools.pl sample_list path2bedDir path2peakroot path2peaklist\nPlease try again.\n\n\n";}
+        die "\n\nUsage:\n ./peaks_explorer_bedtools.pl sample_list path2bedDir path2peakroot path2peaklist path2output\nPlease try again.\n\n\n";}
 
 my $path2samplelist = shift;
 my $path2bed = shift;
@@ -46,6 +46,7 @@ open (IN, "$path2peaklist" ) or die "Can't open $path2peaklist for reading";
 while (my $line = <IN>)
 {
 	chomp $line;
+	chop $line;
 	push @peak_subs, $line;
 }
 close IN;
@@ -54,9 +55,9 @@ foreach my $peaksub (@peak_subs)
 {
 	open (OUT, ">$path2output/$peaksub"."_peak_explore.txt") or die "Can't open $path2output/$peaksub"."_peak_explore.txt for writing";
 	my $peakfile = $peaksub;
-	my (%peak, %peak_pos, %peak_neg);
+	my (%peak, %peak_pos, %peak_neg, %coord);
 	$peakfile =~s/.*Binary/binary/;
-	print OUT "Chr\tPeakStart";
+	print OUT "Chr\tPeakStart\tPeakStop";
 	foreach my $sample (sort @samples)
 	{
 		print "$sample\n";
@@ -66,6 +67,7 @@ foreach my $peaksub (@peak_subs)
 		{
 			chomp $overlap;
 			my @elems = split /\t/, $overlap;
+			$coord{$elems[3]} = $elems[4];
 			if (exists $peak{$elems[0]}{$elems[3]}{$sample})
 			{
 				$peak{$elems[0]}{$elems[3]}{$sample}++;
@@ -105,7 +107,7 @@ foreach my $peaksub (@peak_subs)
 	{
 		for my $begin_out (sort numerically keys %{$peak{$chr_out}})
 		{
-			print OUT "$chr_out\t$begin_out";
+			print OUT "$chr_out\t$begin_out\t$coord{$begin_out}";
 			foreach my $samp_out (sort keys %{$peak{$chr_out}{$begin_out}})
 			{
 				print OUT "\t$peak{$chr_out}{$begin_out}{$samp_out}";
