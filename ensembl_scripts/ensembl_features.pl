@@ -39,9 +39,10 @@ $registry->load_registry_from_db(
     -user => 'anonymous'
 );
 die ("Can't initialise registry") if (!$registry);
+$registry->set_disconnect_when_inactive();
 
 print STDERR "Chrom = $chrom\n";
-open (OUT, ">$path2output/chr$chrom"."_$feature".".gff" ) or die "Can't open $path2output/chr$chrom"."_$feature".".gff for writing";
+open (OUT, ">$path2output/chr$chrom"."_$feature"."s.gff" ) or die "Can't open $path2output/chr$chrom"."_$feature"."s.gff for writing";
 	
 my $slice_adaptor = $registry->get_adaptor( $species, 'Core', 'Slice' );
 
@@ -84,7 +85,7 @@ elsif ($feature eq "misc")
 		
 	}
 }
-elsif ($feature eq "cpg")
+elsif ($feature eq "cpg_island")
 {
 	my @simpletons = @{ $slice->get_all_SimpleFeatures('cpg') };
 	foreach my $simple (@simpletons)

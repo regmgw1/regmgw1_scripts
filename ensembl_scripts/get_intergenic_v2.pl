@@ -131,19 +131,19 @@ for (my $i=1; $i<=$chrom_number+2; $i++) {
     my $access_hash = $i;
 
     if ($i <= $chrom_number) {
-	$infile  = "$path2files/chr".$i."_gene.gff";
-	$outfile = "$path2output/chr".$i."_intergenic.gff";
+	$infile  = "$path2files/chr".$i."_genes.gff";
+	$outfile = "$path2output/chr".$i."_intergenics.gff";
 	$chr = $i;
     }
     elsif ($i == $chrom_number+1) {
-	$infile  = "$path2files/chrX_gene.gff";
-	$outfile = "$path2output/chrX_intergenic.gff";
+	$infile  = "$path2files/chrX_genes.gff";
+	$outfile = "$path2output/chrX_intergenics.gff";
 	$chr = "X";
 	$access_hash = "X";
     }
     elsif ($i == $chrom_number+2) {
-	$infile  = "$path2files/chrY_gene.gff";
-	$outfile = "$path2output/chrY_intergenic.gff";
+	$infile  = "$path2files/chrY_genes.gff";
+	$outfile = "$path2output/chrY_intergenics.gff";
 	$chr = "Y";
 	$access_hash = "Y";
     }
