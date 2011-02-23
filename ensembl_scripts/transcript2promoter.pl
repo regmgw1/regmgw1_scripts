@@ -29,7 +29,7 @@ my $path2output = shift;
 my $version_id = shift;
 my $chr = shift;
 
-open (OUT, ">$path2output/chr$chr"."_trans_proms.gff" ) or die "Can't open $path2output for writing";
+open (OUT, ">$path2output/chr$chr"."_promoters.gff" ) or die "Can't open $path2output for writing";
 
 open (IN, "$path2data" ) or die "Can't open $path2data for reading";
 while (my $line = <IN>)

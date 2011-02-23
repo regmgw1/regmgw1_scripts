@@ -17,8 +17,8 @@
 #cd $2
 CURRENT=`pwd`
 cd $5
-#mkdir genes
-#for c in `seq 1 $3` X Y;do echo $c;perl $2/ensembl_features.pl gene Ensembl$1 $4 $5/genes/ ${c};cat $5/genes/chr${c}_genes.gff >>$5/genes/genes.gff;done
+mkdir genes
+for c in `seq 1 $3` X Y;do echo $c;perl $2/ensembl_features.pl gene Ensembl$1 $4 $5/genes/ ${c};cat $5/genes/chr${c}_genes.gff >>$5/genes/genes.gff;done
 mkdir cpg_islands
 for c in `seq 1 $3` X Y;do echo $c;perl $2/ensembl_features.pl cpg_island Ensembl$1 $4 $5/cpg_islands/ ${c};cat $5/cpg_islands/chr${c}_cpg_islands.gff >>$5/cpg_islands/cpg_islands.gff;done
 mkdir exons
@@ -33,14 +33,15 @@ mkdir transcripts
 for c in `seq 1 $3` X Y;do echo $c;perl $2/ensembl_features.pl transcript Ensembl$1 $4 $5/transcripts/ ${c};cat $5/transcripts/chr${c}_transcripts.gff >>$5/transcripts/transcripts.gff;done
 
 mkdir cpg_shores_2000
-perl cpg_shores.pl $4$6  $5/cpg_islands/ $5/cpg_shores_2000 2000 $1
-cat $5/cpg_shores_2000/chr${c}_cpg_shores_2000.gff >>$5/cpg_shores_2000/cpg_shores_2000.gff
+perl $2/cpg_shores.pl $4$6  $5/cpg_islands/ $5/cpg_shores_2000 2000 $1
+for c in `seq 1 $3` X Y;do echo $c;cat $5/cpg_shores_2000/chr${c}_cpg_shores_2000.gff >>$5/cpg_shores_2000/cpg_shores_2000.gff;done
 
 mkdir intergenics
-perl get_intergenic_v2.pl $4$6 $1 $5/genes $5/intergenics/
+perl $2/get_intergenic_v2.pl $4$6 $1 $5/genes $5/intergenics/
+for c in `seq 1 $3` X Y;do echo $c;cat $5/intergenics/chr${c}_intergenics.gff >>$5/intergenics/intergenics.gff;done
 
 mkdir promoters
-for c in `seq 1 $3` X Y;do echo $c;perl transcript2promoter.pl $5/transcripts/chr${c}_transcripts.gff $5/promoters $1 $c;cat $5/promoters/chr${c}_promoters.gff >> $5/promoters/promoters.gff;done
+for c in `seq 1 $3` X Y;do echo $c;perl $2/transcript2promoter.pl $5/transcripts/chr${c}_transcripts.gff $5/promoters $1 $c;cat $5/promoters/chr${c}_promoters.gff >> $5/promoters/promoters.gff;done
 
 echo "cpg_islands
 cpg_shores_2000

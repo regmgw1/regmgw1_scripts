@@ -45,9 +45,16 @@ for (my $i = 1;$i<=$maxPeak;$i++)
 	{
 		$dmr =~s/chr//;
 		my @elems = split/\t/, $dmr;
-		if ($elems[4] >= $i)
+		if ($elems[4] eq ".")
 		{
 			print TMP "$dmr";
+		}
+		else
+		{
+			if ($elems[4] >= $i)
+			{
+				print TMP "$dmr";
+			}
 		}
 	}
 	close DMR;
@@ -57,7 +64,9 @@ for (my $i = 1;$i<=$maxPeak;$i++)
 	{
 		print STDERR $line;
 		chomp $line;
-		my @count = `intersectBed -a $hscpg_in -b $path2feature/$line/$line"."gff -u`;
+		#my $featureGff = "$path2feature/$line/$line".".gff";
+		my $featureGff = "$path2feature/HARs/$line".".txt";
+		my @count = `intersectBed -a $hscpg_in -b $featureGff -u`;
 		#my @count = `intersectBed -a $hscpg_in -b $path2feature/cpg_island_subsets/$line"."gff -u`;
 		my $out = $#count + 1;
 		$hash{$line}{$i} = $out;

@@ -32,10 +32,10 @@ open (IN, "$path2input" ) or die "Can't open $path2input for reading";
 while (my $line = <IN>)
 {
 	chomp $line;
-	my @elems = split/\t/,$line;
+	my @elems = split/\s/,$line;
 	my $stop = $elems[1] + 1;
 	#print OUT "$line\t$stop\t.\t.\t.\n";
-	print OUT "$elems[0]\t$elems[1]\t$stop\t.\t.\t.\n";
+	print OUT "$elems[5]\t$elems[1]\t$stop\t.\t$elems[4]\t.\n";
 }
 close IN;
 close OUT;

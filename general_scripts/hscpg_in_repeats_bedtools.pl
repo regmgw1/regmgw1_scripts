@@ -46,10 +46,18 @@ for (my $i = 1;$i<=$maxPeak;$i++)
 	{
 		$dmr =~s/chr//;
 		my @elems = split/\t/, $dmr;
-		if ($elems[4] >= $i)
+		if ($elems[4] eq ".")
 		{
 			print TMP "$dmr";
 		}
+		else
+		{
+			if ($elems[4] >= $i)
+			{
+				print TMP "$dmr";
+			}
+		}
+		
 	}
 	close DMR;
 	close TMP;
@@ -60,7 +68,8 @@ for (my $i = 1;$i<=$maxPeak;$i++)
 		chomp $line;
 		open (TMP, ">$path2output"."_tmp$time.rep") or die "Can't open $path2output"."_tmp$time.rep for writing";
 		#open (REP, "$path2feature/repeat_family/repeat_family.gff" ) or die "Can't open $path2feature/repeat_family/repeat_family.gff for reading";
-		open (REP, "$path2feature/repeats/alus/alu.gff" ) or die "Can't open $path2feature$path2feature/repeats/alus/alu.gff for reading";
+		#open (REP, "$path2feature/repeats/alus/alu.gff" ) or die "Can't open $path2feature$path2feature/repeats/alus/alu.gff for reading";
+		open (REP, "$path2feature/repeats/repeat_type_other.gff" ) or die "Can't open $path2feature/repeats/repeat_type_other.gff for reading";
 		while (my $reps = <REP>)
 		{
 			chomp $reps;

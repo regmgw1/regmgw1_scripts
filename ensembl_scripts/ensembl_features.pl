@@ -172,7 +172,7 @@ elsif ($feature eq "gene")
 	foreach my $gene (@gene)
 	{
 		my $strand = $gene->strand();
-		#my $type = $gene->biotype();
+		my $type = $gene->biotype();
 		if ($strand == 1)
 		{
 			$strand = "+";
@@ -182,7 +182,7 @@ elsif ($feature eq "gene")
 			$strand = "-";
 		}
 		#printf OUT ("%s\t$type\t%s\n",$gene->stable_id(),$gene->source());
-		printf OUT ( "%s\tGene_%s\tchr%s:%d-%d\t%d\t%d\t.\t%s\t.\t$version_id; ensembl_features.pl\n",$chrom, $gene->stable_id(), $chrom, $gene->start(), $gene->end(), $gene->start(), $gene->end(), $strand );
+		printf OUT ( "%s\t%s_%s\tchr%s:%d-%d\t%d\t%d\t.\t%s\t.\t$version_id; ensembl_features.pl\n",$chrom, $type, $gene->stable_id(), $chrom, $gene->start(), $gene->end(), $gene->start(), $gene->end(), $strand );
 		
 	}
 }
