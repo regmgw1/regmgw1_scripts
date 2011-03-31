@@ -48,10 +48,10 @@ my $cpg3 = 0;
 
 my %chrom_maf = (1=>8,2=>7,3=>6,4=>6,5=>6,6=>5,7=>7,8=>4,9=>5,10=>5,11=>5,12=>6,13=>3,14=>3,15=>4,16=>4,17=>4,18=>3,19=>4,20=>2,21=>2,22=>3,"X"=>7,"Y"=>1);
 
-open (BASE, ">$path2output/epo_maf_basecount_chr".$chrom."_151210.txt" ) or die "Can't open $path2output/epo_maf_cpg_chr".$chrom.".txt for writing";
-open (BLOCK, ">$path2output/epo_maf_blockcount_chr".$chrom.".txt" ) or die "Can't open $path2output/epo_maf_cpg_chr".$chrom.".txt for writing";
-open (CPG, ">$path2output/epo_maf_cpgcount_chr".$chrom.".txt" ) or die "Can't open $path2output/epo_maf_cpg_chr".$chrom.".txt for writing";
-open (OUT, ">$path2output/epo_maf_cpg_chr".$chrom.".txt" ) or die "Can't open $path2output/epo_maf_cpg_chr".$chrom.".txt for writing";
+open (BASE, ">$path2output/epo_maf_basecount_$pattern"."_chr".$chrom.".txt" ) or die "Can't open $path2output/epo_maf_cpg_chr".$chrom.".txt for writing";
+open (BLOCK, ">$path2output/epo_maf_blockcount_$pattern"."_chr".$chrom.".txt" ) or die "Can't open $path2output/epo_maf_cpg_chr".$chrom.".txt for writing";
+open (CPG, ">$path2output/epo_maf_$pattern"."_count_chr".$chrom.".txt" ) or die "Can't open $path2output/epo_maf_cpg_chr".$chrom.".txt for writing";
+open (OUT, ">$path2output/epo_maf_$pattern"."_chr".$chrom.".txt" ) or die "Can't open $path2output/epo_maf_cpg_chr".$chrom.".txt for writing";
 
 my $i = 1;
 while ($i <= $chrom_maf{$chrom})

@@ -65,9 +65,9 @@ for (my $i = 1;$i<=$maxPeak;$i++)
 		print STDERR $line;
 		chomp $line;
 		#my $featureGff = "$path2feature/$line/$line".".gff";
-		my $featureGff = "$path2feature/HARs/$line".".txt";
-		my @count = `intersectBed -a $hscpg_in -b $featureGff -u`;
-		#my @count = `intersectBed -a $hscpg_in -b $path2feature/cpg_island_subsets/$line"."gff -u`;
+		#my $featureGff = "$path2feature/HARs/$line".".txt";
+		#my @count = `intersectBed -a $hscpg_in -b $featureGff -u`;
+		my @count = `intersectBed -a $hscpg_in -b $path2feature/cpg_island_subsets/$line"."gff -u`;
 		my $out = $#count + 1;
 		$hash{$line}{$i} = $out;
 		undef(@count);

@@ -71,7 +71,7 @@ for (my $i = 1;$i<=$maxPeak;$i++)
 		if ($info =~m/AF=((0|1)\.\d{3});/)
 		{
 			my $freq = $1;
-			if ($freq >= 0.05)
+			if ($freq >= 0.00)
 			{
 				$hash{$i}++;
 			}

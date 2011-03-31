@@ -48,13 +48,13 @@ while (my $line = <IN>)
 	{
 		if ($file == 0)
 		{
-			if ($dmr =~m/chr/)
-			{
+			#if ($dmr =~m/chr/)
+			#{
 				$dmr =~s/chr//;
 				my @elems = split/\t/, $dmr;
 				my $coords = "$elems[0]".":$elems[3]"."-$elems[4]";
 				$mat{$coords}{$line} = 0;
-			}
+			#}
 		}
 		elsif ($file == 1)
 		{
