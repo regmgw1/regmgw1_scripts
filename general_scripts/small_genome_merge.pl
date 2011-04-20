@@ -31,8 +31,10 @@ my $path2speciesList = shift;
 my $path2output = shift;        
 
 my $path2dir = dirname($path2speciesList);
+my $count = 0;
+my $fileC = 1;
 print STDERR "$path2dir\n";
-open (OUT, ">$path2output") or die "Can't open $path2output for writing";
+open (OUT, ">$path2output"."_$fileC") or die "Can't open $path2output"."_$fileC for writing";
 open (IN, "$path2speciesList" ) or die "Can't open $path2speciesList for reading";
 while (my $line = <IN>)
 {
@@ -45,7 +47,16 @@ while (my $line = <IN>)
 		my $nc = $tmp[0];
 		print "$line\t$nc\n";
 		cat ($genome, \*OUT);
+		$count++;
 	}
+	if ($count > 1000)
+	{
+		close OUT;
+		$fileC++;
+		$count = 0;
+		open (OUT, ">$path2output"."_$fileC") or die "Can't open $path2output"."_$fileC for writing";
+	}
+		
 }
 close IN;
 close OUT;
