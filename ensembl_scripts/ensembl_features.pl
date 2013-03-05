@@ -106,10 +106,10 @@ elsif ($feature eq "cpg_island")
 elsif ($feature eq "transcript")
 {
 	my @trans = @{ $slice->get_all_Transcripts() };
-
 	foreach my $trans (@trans)
 	{
 		my $strand = $trans->strand();
+		my $type = $trans->biotype();
 		if ($strand == 1)
 		{
 			$strand = "+";
@@ -118,7 +118,7 @@ elsif ($feature eq "transcript")
 		{
 			$strand = "-";
 		}
-		printf OUT ( "%s\tTranscript_%s\tchr%s:%d-%d\t%d\t%d\t.\t%s\t.\t$version_id; ensembl_features.pl\n",$chrom, $trans->display_id(), $chrom, $trans->start(), $trans->end(), $trans->start(), $trans->end(), $strand );
+		printf OUT ( "%s\tTranscript_%s_%s\tchr%s:%d-%d\t%d\t%d\t.\t%s\t.\t$version_id; ensembl_features.pl\n",$chrom, $type, $trans->display_id(), $chrom, $trans->start(), $trans->end(), $trans->start(), $trans->end(), $strand );
 			
 		
         }
@@ -126,9 +126,9 @@ elsif ($feature eq "transcript")
 elsif ($feature eq "exon")
 {
 	my @trans = @{ $slice->get_all_Transcripts() };
-
 	foreach my $tran (@trans)
 	{
+		my $type = $tran->biotype();
 		foreach my $texon (@{$tran->get_all_Exons()})
 		{
 			my $strand = $texon->strand();
@@ -140,7 +140,7 @@ elsif ($feature eq "exon")
 			{
 				$strand = "-";
 			}
-			printf OUT ( "%s\tExon_%s\tchr%s:%d-%d\t%d\t%d\t.\t%s\t.\t$version_id; ensembl_features.pl\n",$chrom, $texon->display_id(), $chrom, $texon->start(), $texon->end(), $texon->start(), $texon->end(), $strand );
+			printf OUT ( "%s\tExon_%s_%s\tchr%s:%d-%d\t%d\t%d\t.\t%s\t.\t$version_id; ensembl_features.pl\n",$chrom, $type, $texon->display_id(), $chrom, $texon->start(), $texon->end(), $texon->start(), $texon->end(), $strand );
 			
 		}
         }
@@ -150,6 +150,7 @@ elsif ($feature eq "intron")
 	my @trans = @{ $slice->get_all_Transcripts() };
 	foreach my $tran (@trans)
 	{
+		my $type = $tran->biotype();
 		foreach my $tint (@{$tran->get_all_Introns()})
 		{
 			my $strand = $tint->strand();
@@ -161,7 +162,7 @@ elsif ($feature eq "intron")
 			{
 				$strand = "-";
 			}
-			printf OUT ( "%s\tIntron_%s\tchr%s:%d-%d\t%d\t%d\t.\t%s\t.\t$version_id; ensembl_features.pl\n",$chrom, $tint->display_id(), $chrom, $tint->start(), $tint->end(), $tint->start(), $tint->end(), $strand );
+			printf OUT ( "%s\tIntron_%s_%s\tchr%s:%d-%d\t%d\t%d\t.\t%s\t.\t$version_id; ensembl_features.pl\n",$chrom, $type, $tint->display_id(), $chrom, $tint->start(), $tint->end(), $tint->start(), $tint->end(), $strand );
 	      	}
         }
 }

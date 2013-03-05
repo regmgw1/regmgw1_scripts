@@ -33,8 +33,8 @@ my $path2files = shift;
 my $path2output = shift;
 
 
-my (%end_chrom_hash, $chrom_number);
-
+my (%end_chrom_hash, $chrom_number, @chroms);
+$species = lc($species);
 if ($species eq "mouse37")
 {
 	%end_chrom_hash = (
@@ -61,6 +61,7 @@ if ($species eq "mouse37")
         Y => '15902555',      
 	);
 	$chrom_number = 19;
+	@chroms = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,'X','Y');
 }
 elsif ($species eq "human36")
 {
@@ -91,6 +92,7 @@ elsif ($species eq "human36")
         Y => '57772954',        
 	);
 	$chrom_number = 22;
+	@chroms = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,'X','Y');
 }
 elsif ($species eq "human37")
 {
@@ -121,6 +123,7 @@ elsif ($species eq "human37")
         Y => '59373566',        
 	);
 	$chrom_number = 22;
+	@chroms = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,'X','Y');
 }
 elsif ($species eq "dog2")
 {
@@ -166,13 +169,14 @@ elsif ($species eq "dog2")
 	38=>'26897727',
 	);
 	$chrom_number = 38;
+	@chroms = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,'X','Y');	
 }
 elsif ($species eq "chimp2")
 {
 	%end_chrom_hash = (
         1 => '229974691',
-        #2A => '114460064',
-        #2B => '248603653'
+        '2A' => '114460064',
+        '2B' => '248603653',
         3 => '203962478',
         4 => '194897272',
         5 => '183994906',
@@ -197,33 +201,76 @@ elsif ($species eq "chimp2")
         Y => '23952694',        
 	);
 	$chrom_number = 23;
+	@chroms = (1,'2a','2b',3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,'X','Y');
 }
-for (my $i=1; $i<=$chrom_number+2; $i++) {
+elsif ($species eq "macaque1")
+{
+	%end_chrom_hash = (
+        1 => '228252215',
+        2 => '189746636',
+        3 => '196418989',
+        4 => '167655696',
+        5 => '182086969',
+        6 => '178205221',
+        7 => '169801366',
+        8 => '147794981',
+        9 => '133323859',
+        10 => '94855758',
+        11 => '134511895',
+        12 => '106505843',
+        13 => '138028943',
+        14 => '133002572',
+        15 => '110119387',
+        16 => '78773432',
+        17 => '94452569',
+        18 => '73567989',
+        19 => '64391591',
+        20 => '88221753',
+        X => '153947521',
+	);
+	$chrom_number = 20;
+	@chroms = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,'X');
 
-    my $infile  = "";
-    my $outfile = "";
-    my $chr     = "";
+}
+elsif ($species eq "gorilla3")
+{
+	%end_chrom_hash = (
+        1 => '229507203',
+        '2a' => '111351968',
+        '2b' => '131632457',
+        3 => '199944510',
+        4 => '201139530',
+        5 => '165930986',
+        6 => '171703152',
+        7 => '158137892',
+        8 => '145327772',
+        9 => '121947112',
+        10 => '147764049',
+        11 => '133470886',
+        12 => '133360231',
+        13 => '97499607',
+        14 => '88974843',
+        15 => '82026568',
+        16 => '80971650',
+        17 => '94257108',
+        18 => '78787515',
+        19 => '56181278',
+        20 => '62603092',
+        21 => '35451371',
+        22 => '35671106',
+        X => '154045127',
+	);
+	$chrom_number = 23;
+	@chroms = (1,'2a','2b',3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,'X');
+
+}
+foreach my $i (@chroms)
+{
+    my $infile  = "$path2files/chr".$i."_genes.gff";
+    my $outfile = "$path2output/chr".$i."_intergenics.gff";
+    my $chr     = $i;
     my $start_count = 0;
-    my $access_hash = $i;
-
-    if ($i <= $chrom_number) {
-	$infile  = "$path2files/chr".$i."_genes.gff";
-	$outfile = "$path2output/chr".$i."_intergenics.gff";
-	$chr = $i;
-    }
-    elsif ($i == $chrom_number+1) {
-	$infile  = "$path2files/chrX_genes.gff";
-	$outfile = "$path2output/chrX_intergenics.gff";
-	$chr = "X";
-	$access_hash = "X";
-    }
-    elsif ($i == $chrom_number+2) {
-	$infile  = "$path2files/chrY_genes.gff";
-	$outfile = "$path2output/chrY_intergenics.gff";
-	$chr = "Y";
-	$access_hash = "Y";
-    }
-    
+    my $access_hash = $i;    
     open (IN, "$infile") or die "Can't open $infile for reading";
     open (OUT, ">$outfile") or die "Can't open $outfile for writing";
     my %data = ();
@@ -262,10 +309,16 @@ for (my $i=1; $i<=$chrom_number+2; $i++) {
     	if ($height == 0)
     	{
     		my $inter_s = $sorted_pos[$j] + 1;
-		print OUT "$chr\tIntergenic_region\tchr$chr".":$inter_s"."-$end_point\t$inter_s\t$end_point\t.\t-\t.\t$version_id; get_intergenic_v2.pl\n";
-		
+		if ($end_point <= $inter_s)
+		{
+			next;
+		}
+		else
+		{
+			print OUT "$chr\tIntergenic_region\tchr$chr".":$inter_s"."-$end_point\t$inter_s\t$end_point\t.\t-\t.\t$version_id; get_intergenic_v3.pl\n";
+		}
 	}
-	}
+    }
     			
     
     close OUT;

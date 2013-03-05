@@ -37,7 +37,7 @@ perl $2/cpg_shores.pl $4$6  $5/cpg_islands/ $5/cpg_shores_2000 2000 $1
 for c in `seq 1 $3` X Y;do echo $c;cat $5/cpg_shores_2000/chr${c}_cpg_shores_2000.gff >>$5/cpg_shores_2000/cpg_shores_2000.gff;done
 
 mkdir intergenics
-perl $2/get_intergenic_v2.pl $4$6 $1 $5/genes $5/intergenics/
+perl $2/get_intergenic_v3.pl $4$6 $1 $5/genes $5/intergenics/
 for c in `seq 1 $3` X Y;do echo $c;cat $5/intergenics/chr${c}_intergenics.gff >>$5/intergenics/intergenics.gff;done
 
 mkdir promoters
@@ -58,5 +58,5 @@ RNA
 DNA
 Satellite
 LTR
-Other" >$5/repeat_familes.txt
+Other" >$5/repeat_families.txt
 

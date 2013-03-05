@@ -11,7 +11,7 @@ gareth.wilson@cancer.ucl.ac.uk
 This script generates cpg_shore annotation files from cpg_island gff files
 =head2 Usage
 
-Usage: ./cpg_shores.pl species path2islands path2output threshold (in bases) versionID
+Usage: ./downUpstream_elems.pl species path2islands path2output threshold (in bases) versionID
 
 =cut
 
@@ -21,15 +21,19 @@ Usage: ./cpg_shores.pl species path2islands path2output threshold (in bases) ver
 
 use strict;
 
-unless (@ARGV ==5) {
-        die "\n\nUsage:\n ./cpg_shores.pl species path2islands path2output threshold (in bases) versionID\nPlease try again.\n\n\n";}
+unless (@ARGV == 8) {
+        die "\n\nUsage:\n ./downUpstream_elems.pl species path2islands path2output threshold (in bases) versionID window_size down up\nPlease try again.\n\n\n";}
 
 my $species = shift;
 my $path2islands = shift;
 my $path2output = shift;
 my $threshold = shift;
 my $version_id = shift;
+my $window_size = shift;
+my $down = shift;
+my $up = shift;
 
+my $win_inc = int($window_size/2);
 
 my (%end_chrom_hash, $chrom_number, @chroms);
 
@@ -133,22 +137,26 @@ while (my $line = <IN>)
 {
 	my @elems=split/\t/, $line;
 	my $chrom = $elems[0];
-	my $ds_shore_start = $elems[1] - $threshold;
-	my $ds_shore_end = $elems[1] - 1;
+	my $ds_shore_start = ($elems[3] - $threshold) - $win_inc;
+	my $ds_shore_end = ($elems[3] - $threshold) + $win_inc;
 	if ($ds_shore_start < 0)
 	{
 		$ds_shore_start = 0;
 	}
-	my $us_shore_start = $elems[2] + 1;
-	my $us_shore_end = $elems[2] + $threshold;
+	my $us_shore_start = ($elems[4] + $threshold) - $win_inc;
+	my $us_shore_end = ($elems[4] + $threshold) + $win_inc;
 	if ($us_shore_end > $end_chrom_hash{$chrom})
 	{
 		$us_shore_end = $end_chrom_hash{$chrom};
 	}
-	print OUT "$elems[0]\t$ds_shore_start\t$ds_shore_end\t$elems[3]";
-	print OUT "$elems[0]\t$us_shore_start\t$us_shore_end\t$elems[3]";
-	#print OUT "$elems[0]\tCpG_shore_down_$threshold\tchr$elems[0]".":$ds_shore_start"."-$ds_shore_end\t$ds_shore_start\t$ds_shore_end\t.\t.\t.\t$version_id; cpg_shores.pl\n";
-	#print OUT "$elems[0]\tCpG_shore_up_$threshold\tchr$elems[0]".":$us_shore_start"."-$us_shore_end\t$us_shore_start\t$us_shore_end\t.\t.\t.\t$version_id; cpg_shores.pl\n";
+	if ($down == 1)
+	{
+		print OUT "$elems[0]\tdown_$threshold\tchr$elems[0]".":$ds_shore_start"."-$ds_shore_end\t$ds_shore_start\t$ds_shore_end\t.\t.\t.\t$version_id; downUpstream_elems.pl\n";
+	}
+	if ($up == 1)
+	{
+		print OUT "$elems[0]\tup_$threshold\tchr$elems[0]".":$us_shore_start"."-$us_shore_end\t$us_shore_start\t$us_shore_end\t.\t.\t.\t$version_id; downUpstream_elems.pl\n";
+	}
 }
 close IN;
 close OUT;
