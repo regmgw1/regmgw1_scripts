@@ -41,13 +41,22 @@ $registry->load_registry_from_db(
 die ("Can't initialise registry") if (!$registry);
 $registry->set_disconnect_when_inactive();
 
+$chrom =~s/^chr//;
 print STDERR "Chrom = $chrom\n";
 open (OUT, ">$path2output/chr$chrom"."_$feature"."s.gff" ) or die "Can't open $path2output/chr$chrom"."_$feature"."s.gff for writing";
 	
 my $slice_adaptor = $registry->get_adaptor( $species, 'Core', 'Slice' );
+my $slice;
 
 # Obtain a slice covering the entire chromosome $chrom
-my $slice = $slice_adaptor->fetch_by_region( 'chromosome', $chrom );
+if ($chrom =~m/^GL/)
+{
+	$slice = $slice_adaptor->fetch_by_region( 'supercontig', $chrom );
+}
+else
+{
+	$slice = $slice_adaptor->fetch_by_region( 'chromosome', $chrom );
+}
 
 if ($feature eq "repeat")
 {

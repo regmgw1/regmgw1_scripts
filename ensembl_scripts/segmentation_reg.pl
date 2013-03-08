@@ -6,7 +6,7 @@ use Bio::EnsEMBL::Registry;
 use IO::File;
 
 unless (@ARGV ==4 ) {
-        die "\n\nUsage:\n ./ensembl_features.pl versionID species path2output chrom\nPlease try again.\n\n\n";}
+        die "\n\nUsage:\n ./segmentation_reg.pl versionID species path2output chrom\nPlease try again.\n\n\n";}
 
 my $version_id = shift;
 my $species = shift;
@@ -35,8 +35,17 @@ print STDERR "Chrom = $chrom\n";
 
 #my $regfeat_adaptor = $registry->get_adaptor($species, 'funcgen', 'regulatoryfeature');
 my $slice_adaptor = $registry->get_adaptor( $species, 'Core', 'Slice' );
-# Obtain a slice covering the entire chromosome 22
-my $slice = $slice_adaptor->fetch_by_region( 'chromosome', $chrom );
+
+my $slice;
+
+if ($chrom =~m/^GL/)
+{
+	$slice = $slice_adaptor->fetch_by_region( 'supercontig', $chrom );
+}
+else
+{
+	$slice = $slice_adaptor->fetch_by_region( 'chromosome', $chrom );
+}
 
 my $seg_adaptor = $registry->get_adaptor('Human', 'funcgen', 'segmentationfeature');
 my @seg_feats = @{$seg_adaptor->fetch_all_by_Slice($slice)};
@@ -68,11 +77,14 @@ foreach my $multi_seg (@seg_feats)
 	}
 }	
 
+open (CELL, ">$path2output/cellType.list" ) or die "Can't open $path2output/cellType.list for writing";
 # close all output files
-foreach my $fh (values (%typeH))
+foreach my $cell (keys (%typeH))
 {
-	close $fh;
+	print CELL "$cell\n";	
+	close $typeH{$cell};
 }
+close CELL;
 
 #close OUT;
 
