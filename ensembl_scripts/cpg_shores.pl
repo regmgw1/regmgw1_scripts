@@ -59,10 +59,19 @@ foreach my $chrom (keys %end_chrom_hash)
 			$ds_shore_start = 0;
 		}
 		my $us_shore_start = $elems[4] + 1;
-		my $us_shore_end = $elems[4] + $threshold;
-		if ($us_shore_end > $end_chrom_hash{$chrom})
+		my $us_shore_end;
+		# check for discrepancies between genome assemblies
+		if ($us_shore_start >= $end_chrom_hash{$chrom})
 		{
-			$us_shore_end = $end_chrom_hash{$chrom};
+			next;
+		}
+		else
+		{
+			$us_shore_end = $elems[4] + $threshold;
+			if ($us_shore_end > $end_chrom_hash{$chrom})
+			{
+				$us_shore_end = $end_chrom_hash{$chrom};
+			}
 		}
 		print OUT "$elems[0]\tCpG_shore_down_$threshold\tchr$elems[0]".":$ds_shore_start"."-$ds_shore_end\t$ds_shore_start\t$ds_shore_end\t.\t.\t.\t$version_id; cpg_shores.pl\n";
 		print OUT "$elems[0]\tCpG_shore_up_$threshold\tchr$elems[0]".":$us_shore_start"."-$us_shore_end\t$us_shore_start\t$us_shore_end\t.\t.\t.\t$version_id; cpg_shores.pl\n";

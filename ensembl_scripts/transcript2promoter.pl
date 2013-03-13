@@ -22,41 +22,61 @@ Usage: ./transcript2promoter.pl path2transcript path2output versionID chr
 use strict;
 
 unless (@ARGV ==4) {
-        die "\n\nUsage:\n ./transcript2promoter.pl path2transcript path2output versionID chr\nPlease try again.\n\n\n";}
+        die "\n\nUsage:\n ./transcript2promoter.pl path2chromlist path2transcript path2output versionID\nPlease try again.\n\n\n";}
 
+my $path2chrom = shift;
 my $path2data = shift;
 my $path2output = shift;
 my $version_id = shift;
-my $chr = shift;
 
-open (OUT, ">$path2output/chr$chr"."_promoters.gff" ) or die "Can't open $path2output for writing";
+my %end_chrom_hash;
 
-open (IN, "$path2data" ) or die "Can't open $path2data for reading";
-while (my $line = <IN>)
+open (CHR, "$path2chrom" ) or die "Can't open $path2chrom for reading";
+while (my $line = <CHR>)
 {
-	chomp $line;
-	my ($p_start, $p_stop);
-	my @elems = split/\t/,$line;
-	my $start = $elems[3];
-	my $stop = $elems[4];
-	my $strand = $elems[6];
-	my $id = $elems[1];
-	$id =~s/Transcript/Promoter/;
-	if ($strand eq "+")
-	{
-		$p_start = $start - 1000;
-		$p_stop = $start + 500;
-	}
-	elsif ($strand eq "-")
-	{
-		$p_stop = $stop + 1000;
-		$p_start = $stop - 500;
-	}
-	else
-	{
-		print "ERROR! World will end!!!!\n";
-	}
-	print OUT "$chr\t$id\tchr$chr".":$p_start"."-$p_stop\t$p_start\t$p_stop\t.\t$strand\t.\t$version_id;transcript2promoter.pl\n";
+	chomp $line;	
+	my @elems=split/\t/, $line;
+	$end_chrom_hash{$elems[0]} = $elems[1];
 }
-close IN;
-close OUT;
+close CHR;
+foreach my $chrom (keys %end_chrom_hash)
+{
+	open (OUT, ">$path2output/chr$chrom"."_promoters.gff" ) or die "Can't open $path2output for writing";
+	open (IN, "$path2data/chr$chrom"."_transcripts.gff" ) or die "Can't open $path2data for reading";
+	while (my $line = <IN>)
+	{
+		chomp $line;
+		my ($p_start, $p_stop);
+		my @elems = split/\t/,$line;
+		my $start = $elems[3];
+		my $stop = $elems[4];
+		my $strand = $elems[6];
+		my $id = $elems[1];
+		$id =~s/Transcript/Promoter/;
+		# check for discrepancies between genome assemblies
+		if ($start >= $end_chrom_hash{$chrom})
+		{
+			next;
+		}
+		else
+		{
+			if ($strand eq "+")
+			{
+				$p_start = $start - 1000;
+				$p_stop = $start + 500;
+			}
+			elsif ($strand eq "-")
+			{
+				$p_stop = $stop + 1000;
+				$p_start = $stop - 500;
+			}
+			else
+			{
+				print "ERROR! World will end!!!!\n";
+			}
+			print OUT "$chrom\t$id\tchr$chrom".":$p_start"."-$p_stop\t$p_start\t$p_stop\t.\t$strand\t.\t$version_id;transcript2promoter.pl\n";
+		}
+	}
+	close IN;
+	close OUT;
+}

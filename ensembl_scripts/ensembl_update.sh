@@ -53,7 +53,8 @@ for c in "${CHROMS[@]}";do echo $c;cat $5/intergenics/chr${c}_intergenics.gff >>
 
 echo "Promoters"
 mkdir promoters
-for c in "${CHROMS[@]}";do echo $c;perl $2/transcript2promoter.pl $5/transcripts/chr${c}_transcripts.gff $5/promoters $1 $c;cat $5/promoters/chr${c}_promoters.gff >> $5/promoters/promoters.gff;done
+perl $2/transcript2promoter.pl $3 $5/transcripts/ $5/promoters $1
+for c in "${CHROMS[@]}";do echo $c;cat $5/promoters/chr${c}_promoters.gff >> $5/promoters/promoters.gff;done
 
 echo "RegSegment"
 mkdir regSegments
