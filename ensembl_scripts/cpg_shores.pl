@@ -56,7 +56,7 @@ foreach my $chrom (keys %end_chrom_hash)
 		my $ds_shore_end = $elems[3] - 1;
 		if ($ds_shore_start < 0)
 		{
-			$ds_shore_start = 0;
+			$ds_shore_start = 1;
 		}
 		my $us_shore_start = $elems[4] + 1;
 		my $us_shore_end;

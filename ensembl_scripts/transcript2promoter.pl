@@ -61,13 +61,21 @@ foreach my $chrom (keys %end_chrom_hash)
 		else
 		{
 			if ($strand eq "+")
-			{
+			{			
 				$p_start = $start - 1000;
+				if ($p_start <= 0)
+				{
+					$p_start = 1;
+				}
 				$p_stop = $start + 500;
 			}
 			elsif ($strand eq "-")
 			{
 				$p_stop = $stop + 1000;
+				if ($p_stop > $end_chrom_hash{$chrom})
+				{
+					$p_stop = $end_chrom_hash{$chrom};
+				}
 				$p_start = $stop - 500;
 			}
 			else

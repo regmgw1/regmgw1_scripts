@@ -17,7 +17,7 @@ Usage: ./get_intergenic_v2.pl path2genes path2output
 
 
 #################################################################
-# get_intergenic_v2.pl
+# get_intergenic_v3.pl
 #################################################################
 
 
@@ -25,7 +25,7 @@ use strict;
 $|=1;
 
 unless (@ARGV ==4 ) {
-        die "\n\nUsage:\n ./create_signal_map_from_maq_gff.pl species versionID path2gffs path2output\nPlease try again.\n\n\n";}
+        die "\n\nUsage:\n ./get_intergenic_v3.pl path2chrom versionID path2gffs path2output\nPlease try again.\n\n\n";}
 
 my $path2chrom = shift;
 my $version_id = shift;
@@ -45,8 +45,10 @@ while (my $line = <IN>)
 
 foreach my $i (keys %end_chrom_hash)
 {
-    my $infile  = "$path2files/chr".$i."_genes.gff";
-    my $outfile = "$path2output/chr".$i."_intergenics.gff";
+    #my $infile  = "$path2files/chr".$i."_genes.gff";
+    #my $outfile = "$path2output/chr".$i."_intergenics.gff";
+    my $infile  = "$path2files/$i"."_cpg_islands.gff";
+    my $outfile = "$path2output/$i"."_interIslands.gff";
     my $chr     = $i;
     my $start_count = 0;
     my $access_hash = $i;    
