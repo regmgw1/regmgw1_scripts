@@ -46,8 +46,8 @@ foreach my $chrom (keys %end_chrom_hash)
 {
 	print "Chrom = $chrom\n";
 	my %hash = ();
-	open (OUT, ">$path2output/chr$chrom"."_cpg_shores_$threshold".".gff" ) or die "Can't open $path2output/chr$chrom"."_cpg_shores_$threshold".".gff for writing";
-	open (IN, "$path2islands/chr$chrom"."_cpg_islands".".gff" ) or die "Can't open $path2output/chr$chrom"."_cpg_islands".".gff for reading";
+	open (OUT, ">$path2output/$chrom"."_cpg_shores_$threshold".".gff" ) or die "Can't open $path2output/$chrom"."_cpg_shores_$threshold".".gff for writing";
+	open (IN, "$path2islands/$chrom"."_cpg_islands".".gff" ) or die "Can't open $path2output/$chrom"."_cpg_islands".".gff for reading";
 	#open (IN, "$path2islands/chr$chrom"."_hsCpG-hsGpC_t5_GRCh37_58_cpg_island".".txt" ) or die "Can't open $path2islands/chr$chrom"."_hsCpG-hsGpC_t5_GRCh37_58_cpg_island".".gff for reading";
 	while (my $line = <IN>)
 	{

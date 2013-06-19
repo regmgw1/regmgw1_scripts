@@ -45,10 +45,10 @@ while (my $line = <IN>)
 
 foreach my $i (keys %end_chrom_hash)
 {
-    #my $infile  = "$path2files/chr".$i."_genes.gff";
-    #my $outfile = "$path2output/chr".$i."_intergenics.gff";
-    my $infile  = "$path2files/$i"."_cpg_islands.gff";
-    my $outfile = "$path2output/$i"."_interIslands.gff";
+    my $infile  = "$path2files/$i"."_genes.gff";
+    my $outfile = "$path2output/$i"."_intergenics.gff";
+    #my $infile  = "$path2files/$i"."_cpg_islands.gff";
+    #my $outfile = "$path2output/$i"."_interIslands.gff";
     my $chr     = $i;
     my $start_count = 0;
     my $access_hash = $i;    
@@ -103,6 +103,6 @@ foreach my $i (keys %end_chrom_hash)
     			
     
     close OUT;
-    print "chr$access_hash\n";
+    print "$access_hash\n";
     
 }

@@ -41,8 +41,8 @@ while (my $line = <CHR>)
 close CHR;
 foreach my $chrom (keys %end_chrom_hash)
 {
-	open (OUT, ">$path2output/chr$chrom"."_promoters.gff" ) or die "Can't open $path2output for writing";
-	open (IN, "$path2data/chr$chrom"."_transcripts.gff" ) or die "Can't open $path2data for reading";
+	open (OUT, ">$path2output/$chrom"."_promoters.gff" ) or die "Can't open $path2output for writing";
+	open (IN, "$path2data/$chrom"."_transcripts.gff" ) or die "Can't open $path2data for reading";
 	while (my $line = <IN>)
 	{
 		chomp $line;
