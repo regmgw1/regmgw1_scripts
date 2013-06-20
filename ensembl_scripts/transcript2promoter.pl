@@ -82,7 +82,9 @@ foreach my $chrom (keys %end_chrom_hash)
 			{
 				print "ERROR! World will end!!!!\n";
 			}
-			print OUT "$chrom\t$id\tchr$chrom".":$p_start"."-$p_stop\t$p_start\t$p_stop\t.\t$strand\t.\t$version_id;transcript2promoter.pl\n";
+			$_ = $chrom;
+			s/chr//;
+			print OUT "$_\t$id\t$chrom".":$p_start"."-$p_stop\t$p_start\t$p_stop\t.\t$strand\t.\t$version_id;transcript2promoter.pl\n";
 		}
 	}
 	close IN;

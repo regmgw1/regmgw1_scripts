@@ -75,6 +75,7 @@ foreach my $i (keys %end_chrom_hash)
     my @sorted_pos = sort {$a <=> $b} (keys %data);
     my $height = 0;
     my $pos_length = @sorted_pos;
+    $chr =~s/chr//;
     for (my $j=0; $j<$pos_length; $j++)
     {
     	$height += $data{$sorted_pos[$j]};
